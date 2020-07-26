@@ -1,0 +1,110 @@
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches" *ngIf="shouldRun">
+  <mat-toolbar color="primary" class="example-toolbar">
+    <button mat-icon-button (click)="snav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1 class="example-app-name">
+      <b>SIGAP</b> - Alfa 
+    </h1>
+
+
+
+
+    <mat-nav-list class="ml-auto">
+      <div class="navbar-nav ml-auto" *ngIf="!authService.loggedIn()">
+        <div class="row">
+        <a class="nav-link" style="cursor: pointer;" [routerLink]="['/signin']">
+          Ingresar
+        </a>
+           
+        <a class="nav-link" style="cursor: pointer;" [routerLink]="['/signup']">
+          Registrarse
+        </a>
+           
+      </div>
+      </div>
+
+    </mat-nav-list>
+    <div class="ml-auto" *ngIf="authService.loggedIn()">
+
+      <div class="row">
+
+        {{ nombreUsuario   }} - 
+        <a style="cursor: pointer;" (click)="authService.logout()">
+          Salir
+        </a>
+         
+      </div>
+    </div>
+
+  </mat-toolbar>
+
+  <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+      fixedTopGap="56">
+      <mat-nav-list *ngIf="authService.loggedIn()">
+        <!-- <a mat-list-item [routerLink]="nav.route" *ngFor="let nav of fillerNav">
+          <mat-icon> {{nav.icon}} </mat-icon>
+          {{nav.name}}
+        </a> -->
+        <!-- <a mat-list-item [routerLink]="nav.route" *ngFor="let nav of getPrivateTasks()"> -->
+        <!-- <a mat-list-item [routerLink]="nav.route" *ngFor="let nav of lataskprivada"> -->
+
+
+
+
+        <!-- <a mat-buttom (click)="onClickMe(task)"> -->
+        <a mat-list-item>
+          <h1 matLine>
+            <a [routerLink]="['/private']">
+              Pantalla inicial
+            </a>
+          </h1>
+
+        </a>
+        <a mat-list-item>
+          <h1 matLine>
+            <a [routerLink]="['/informes']">
+              Crear informe
+            </a>
+          </h1>
+
+        </a>
+        <a mat-list-item>
+          <h1 matLine>
+            <a [routerLink]="['/nueva_auditoria']">
+              Nueva auditoría
+            </a>
+          </h1>
+
+        </a>
+        <a mat-list-item>
+          <h1 matLine>
+            <a [routerLink]="['/administracion']">
+              Administracion de bases
+            </a>
+          </h1>
+
+        </a>
+
+
+        <!-- <p style="padding-left: 10%; color:rgba(63, 81, 181, 0.74) ;height: 5px; font-size:90% ; padding-top: 13%;padding-bottom: 10%;"> <b> Informes registrados </b>  </p>
+        <mat-divider></mat-divider>
+        <app-private-tasks> </app-private-tasks> -->
+
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="contenido" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+
+      <router-outlet></router-outlet>
+      <!-- <p *ngFor="let content of fillerContent">{{content}}</p> -->
+
+
+
+    </mat-sidenav-content>
+
+  </mat-sidenav-container>
+</div>
+
+<div *ngIf="!shouldRun">Error barra</div>

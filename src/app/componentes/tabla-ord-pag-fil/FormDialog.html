@@ -1,0 +1,200 @@
+<div align="end">
+    <span>{{data.base | uppercase}}</span>
+    <!-- <div fxFlex></div> -->
+</div>
+<h1 mat-dialog-title>
+    {{data.titulo}}
+
+    <!-- {{formattedMessage}} -->
+</h1>
+<form [formGroup]="form" (ngSubmit)="save($event)" class="col">
+    <div mat-dialog-content>
+
+
+        <div [ngSwitch]="data.tipo[reg]" *ngFor="let reg of columnas">
+
+            <mat-form-field *ngSwitchCase="['String']" class="container">
+
+                <mat-label> {{reg}} </mat-label>
+                <input matInput type="string" formControlName="{{reg}}">
+
+            </mat-form-field>
+
+
+            <!-- <mat-form-field *ngSwitchCase="['Boolean']" class="container"> -->
+
+            <!-- <mat-label>  </mat-label>
+                <input matInput type="string" > -->
+            <mat-slide-toggle [color]="color" *ngSwitchCase="['Boolean']" class="container" formControlName="{{reg}}">
+                {{reg}}
+            </mat-slide-toggle>
+            <!-- </mat-form-field> -->
+
+
+            <mat-form-field *ngSwitchCase="['Number']" class="container">
+
+                <mat-label> {{reg}} </mat-label>
+                <input matInput type="number" formControlName="{{reg}}">
+
+            </mat-form-field>
+
+
+            <mat-form-field *ngSwitchCase="['Date']" class="container">
+
+                <mat-label> {{reg}} </mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="{{reg}}">
+                <mat-datepicker-toggle matSuffix [for]="picker" *ngSwitchCase="['Date']">
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+
+            </mat-form-field>
+
+
+            <mat-form-field *ngSwitchCase="['Array']" class="container">
+
+                <mat-label> {{reg}} </mat-label>
+                <mat-select matInput formControlName="{{reg}}" multiple>
+                    <mat-option *ngFor="let opcion of data.opciones[reg]" [value]="opcion._id">
+                        {{opcion.mostrar}}
+                    </mat-option>
+                </mat-select>
+
+            </mat-form-field>
+
+            <mat-form-field *ngSwitchCase="['ObjectID']" class="container">
+
+                <mat-label> {{reg}} </mat-label>
+                <mat-select formControlName="{{reg}}">
+                    <mat-option value="{{opc._id}}" *ngFor="let opc of data.opciones[reg]">
+                        {{opc.mostrar}}
+                    </mat-option>
+                </mat-select>
+
+                <h2>{{data.opciones[reg]}}</h2>
+
+            </mat-form-field>
+
+
+            <div *ngSwitchDefault class="container">
+                <div *ngIf="typeOf(data.tipo[reg]) == 'object'">
+                    <mat-label> {{reg | uppercase}} </mat-label>
+
+                    <button mat-icon-button type="button" (click)="addSubElemento()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                    <div formArrayName='{{reg}}'>
+                        <div *ngFor="let item of getSubelementos.controls; let pointIndex= index"
+                            [formGroupName]='pointIndex'>
+
+
+
+                            <mat-grid-list cols="{{(length(Subcolumnas)-1)*5+1}}" rowHeight="55px" gutterSize="5px">
+                                <!-- <mat-grid-list cols="4" rowHeight="100px"> -->
+
+                                <div *ngFor="let Subreg of Subcolumnas; let Pointindex= index">
+
+                                    <div [ngSwitch]="data.tipo[reg][0][Subreg]">
+
+                                        <mat-grid-tile *ngIf="Pointindex == 0" [colspan]="1" [rowspan]="2">
+
+                                            <a mat-icon-button type="button" (click)="deleteSubElemento(pointIndex)">
+                                                <mat-icon>remove</mat-icon>
+                                            </a>
+
+                                        </mat-grid-tile>
+
+                                        <mat-grid-tile *ngSwitchCase="['ObjectID']" [colspan]="(length(Subcolumnas)-1)*5"
+                                            [rowspan]="1">
+
+
+                                            <mat-form-field style="width:100%">
+                                                <mat-label> {{Subreg}} </mat-label>
+                                                <mat-select formControlName="{{Subreg}}" >
+                                                    <mat-option *ngFor="let SubOpc of SubOpciones[Subreg]"
+                                                        value="{{SubOpc._id}}">
+                                                        {{SubOpc.mostrar}}
+                                                    </mat-option>
+                                                </mat-select>
+
+                                            </mat-form-field>
+
+                                        </mat-grid-tile>
+
+
+
+                                        <mat-grid-tile [colspan]="4" [rowspan]="1">
+
+                                            <div class="row">
+
+                                                <!-- <mat-form-field *ngSwitchCase="['ObjectID']"
+                                                        style="text-align: left; padding-left: 40%;">
+                                                        <mat-label> {{Subreg}} </mat-label>
+                                                        <mat-select formControlName="{{Subreg}}">
+                                                            <mat-option *ngFor="let SubOpc of SubOpciones[Subreg]"
+                                                                value="{{SubOpc._id}}">
+                                                                {{SubOpc.mostrar}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                       
+                                                    </mat-form-field> -->
+
+
+
+                                                <mat-form-field *ngSwitchCase="['Number']" style="text-align: center">
+                                                    <mat-label> {{Subreg}} </mat-label>
+                                                    <input matInput type="number" formControlName="{{Subreg}}">
+                                                </mat-form-field>
+
+
+
+                                                <mat-slide-toggle [color]="color" *ngSwitchCase="['Boolean']"
+                                                    class="container" formControlName="{{Subreg}}">
+                                                    {{Subreg}}
+                                                </mat-slide-toggle>
+
+                                                <mat-form-field *ngSwitchDefault style="text-align: center">
+                                                    <input matInput class="input" type="text"
+                                                        formControlName="{{Subreg}}" placeholder="{{Subreg}}">
+                                                </mat-form-field>
+
+                                            </div>
+
+                                        </mat-grid-tile>
+                                    </div>
+                                </div>
+
+                            </mat-grid-list>
+                            <hr>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                </div>
+                <div *ngIf="typeOf(data.tipo[reg]) != 'object'">
+                    <mat-label> campo X </mat-label>
+                    <input matInput type="string" formControlName="{{reg}}" placeholder="ni idea">
+                </div>
+
+
+            </div>
+
+
+
+
+
+
+
+        </div>
+
+
+
+    </div>
+    <div mat-dialog-actions>
+        <a mat-button (click)="onNoClick()">Cancelar</a>
+        <button mat-button type="submit" [mat-dialog-close]="data.mostrar">Guardar</button>
+    </div>
+</form>

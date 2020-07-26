@@ -1,0 +1,200 @@
+<div class="mat-elevation-z2">
+
+    <br>
+    <!-- BOTONES -->
+
+    <mat-grid-list cols="3" rowHeight="45px" style="margin-top: 10px;">
+        <mat-grid-tile>
+            <a mat-button style="background-color: rgb(63, 181, 69); color: cornsilk;" (click)="openAddFileDialog('crear')">
+                Crear
+            </a>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <a mat-button style="background-color: rgb(179, 181, 63); color: cornsilk;" (click)="openAddFileDialog('editar')">
+                Editar
+            </a>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <a mat-button style="background-color: rgb(181, 63, 63); color: cornsilk;" (click)="eliminarRegistro()">
+                Eliminar
+            </a>
+        </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <hr>
+    <!-- <form-adaptativo [BASE]="nuevoRegistro" [TIPO] = "tipoColumnas" [FLAG]="flagEditar"></form-adaptativo> -->
+
+    <div class="container">
+        <!-- Formulario de creacion y edicion -->
+        <mat-card style="max-width: 400px;" *ngIf="false">
+        <!-- <mat-card style="max-width: 400px;" *ngIf="flagEditar"> -->
+
+
+            <!-- <form-adaptativo [BASE]="nuevoRegistro"></form-adaptativo> -->
+
+
+            <mat-card-header>
+                <div mat-card-avatar></div>
+                <mat-card-title> {{BASE}} </mat-card-title>
+                <mat-card-subtitle>Agregar nuevo registro</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+
+                <form (submit)="Guardar()">
+
+
+                    <mat-form-field *ngFor="let reg of displayedColumns">
+
+                        <mat-label> {{reg}} </mat-label>
+
+                        <input matInput type="string" [(ngModel)]="nuevoRegistro[reg]"
+                            *ngIf="tipoColumnas[reg] == ['String'] " name=" {{reg}} ">
+
+                        <input matInput type="number" [(ngModel)]="nuevoRegistro[reg]"
+                            *ngIf="tipoColumnas[reg] == ['Number']" name=" {{reg}} ">
+
+                        <!-- <mat-select [formControl]="matselect2(['5ea1d2e4486d4c2f38a7635f'])" multiple *ngIf="tipoColumnas[reg] == ['Array'] " -->
+                        <mat-select *ngIf="tipoColumnas[reg] == ['Array']  " [formControl]="matselect5[reg]" multiple>
+                            <!-- [(ngModel)]="nuevoRegistro[reg]" -->
+                            <mat-option *ngFor="let opcion of opciones[reg]" [value]="opcion._id">
+                                {{opcion.mostrar}}
+                            </mat-option>
+                        </mat-select>
+
+                        <mat-select [(value)]="nuevoRegistro[reg]" *ngIf="tipoColumnas[reg] == ['ObjectID'] ">
+                            <mat-option value="{{opc}}" *ngFor="let opc of opciones[reg]"> {{opc.mostrar}} </mat-option>
+                        </mat-select>
+
+                        <!-- <mat-checkbox *ngIf="tipoColumnas[reg] == ['Boolean'] " [(ngModel)]="nuevoRegistro[reg]" name=" {{reg}} ">
+                            Checked
+                        </mat-checkbox> -->
+
+                        <!-- <mat-slide-toggle  *ngIf="tipoColumnas[reg] == ['Boolean'] "  class="example-margin" [color]="color" [checked]="checked"
+                            [disabled]="disabled">
+                            Slide me!
+                        </mat-slide-toggle> -->
+
+
+
+
+                        <input matInput [matDatepicker]="picker" [(ngModel)]="nuevoRegistro[reg]" name=" {{reg}} "
+                            *ngIf="tipoColumnas[reg] == ['Date'] ">
+                        <mat-datepicker-toggle matSuffix [for]="picker" *ngIf="tipoColumnas[reg] == ['Date'] ">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+
+                        <!--&& tipoColumnas[reg] != ['Boolean']" -->
+                        <div *ngIf=" typeOf( tipoColumnas[reg] )  == 'object' ">
+                            <input matInput [(ngModel)]="nuevoRegistro[reg]" name=" {{reg}} "> hola
+                        </div>
+
+                        <div *ngIf="
+                                    typeOf( tipoColumnas[reg] )  != 'object' &&
+                                    tipoColumnas[reg] != ['String'] &&
+                                    tipoColumnas[reg] != ['Array'] &&
+                                    tipoColumnas[reg] != ['ObjectID'] &&
+                                    tipoColumnas[reg] != ['Date'] &&
+                                    tipoColumnas[reg] != ['Number'] ">
+                            <!--&& tipoColumnas[reg] != ['Boolean']" -->
+                            <!-- {typeOf( tipoColumnas[reg] )} -->
+                            <input matInput [(ngModel)]="nuevoRegistro[reg]" name=" {{reg}} ">{{tipoColumnas[reg]}}
+                        </div>
+
+                    </mat-form-field>
+
+
+                    <!-- <mat-form-field>
+                        <mat-checkbox>Check me!</mat-checkbox>
+
+                    </mat-form-field> -->
+
+                    <button mat-button type="submit">Guardar</button>
+                    <a mat-button (click)="Cancelar()">Cancelar</a>
+                </form>
+
+            </mat-card-content>
+
+
+        </mat-card>
+
+        <div style="padding-right: 5%;padding-left: 5%;padding-bottom: 5%;padding-top: 1%;">
+            <!-- Filtro de la tabla -->
+            <mat-form-field>
+                <mat-label>Buscar</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Este campo busca por todas las columnas">
+            </mat-form-field>
+
+
+            <table mat-table [dataSource]="dataSource" style="height: 800px;" matSort>
+
+
+                <!-- Creacion de columnas y filas  -->
+                <ng-container matColumnDef="{{columna}}" *ngFor="let columna of displayedColumns">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>   {{columna}}   </th>
+                    <td mat-cell *matCellDef="let fila">
+
+                        <div *ngIf="typeOf(tipoColumnas[columna]) == 'object'">
+                            <ul>
+                                <li *ngFor="let elementos of fila[columna]">
+                                    <!-- {{elementos[columna] | opciones:opciones[columna] | async}}  -->
+                                    {{elementos[columna]['mostrar']}} 
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div *ngIf="tipoColumnas[columna] == ['String'] || tipoColumnas[columna] == ['Date'] || tipoColumnas[columna] == ['Number'] || tipoColumnas[columna] == ['Boolean']">
+                            {{fila[columna]}}
+                        </div>
+
+                        <div *ngIf=" tipoColumnas[columna] == ['ObjectID'] ">
+                            <!-- {{fila[columna] | opciones:opciones[columna] | async}} -->
+                           <!-- <pre> {{fila[columna] | json}} </pre>  -->
+                            {{fila[columna]["mostrar"]}}
+                        </div>
+
+                        <div *ngIf="tipoColumnas[columna] == ['Array']">
+                            <ul>
+                                <li *ngFor="let elemento of fila[columna]">
+                                    <!-- {{elemento | opciones:opciones[columna] | async}} -->
+                                    {{elemento['mostrar']?elemento['mostrar']:elemento['usuarios']['mostrar']  }}
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div
+                            *ngIf="tipoColumnas[columna] != ['String'] && tipoColumnas[columna] != ['ObjectID'] && tipoColumnas[columna] != ['Array'] && tipoColumnas[columna] != ['Number'] && tipoColumnas[columna] != ['Date'] && tipoColumnas[columna] != ['Boolean'] && typeOf(tipoColumnas[columna]) != 'object'">
+                            <ul>
+                                <li *ngFor="let elementos of fila[columna]">
+                                    <!-- {{elementos[columna] | opciones:opciones[columna] | async}}  -->
+                                    {{elementos[columna] | json}} ||||| {{tipoColumnas[columna]}}
+                                </li>
+                            </ul>
+                        </div>
+
+
+
+
+                    </td>
+                    <!-- <td mat-cell *matCellDef="let fila" [ngIf]="tipoColumnas[columna] == ['object'] "> aaaa {{fila[columna] }} </td> -->
+                </ng-container>
+                <!--  -->
+
+                <!-- Esto es para selecionar un elemento de la tabla -->
+                <ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                        [ngClass]="{'highlight': selectedRowIndex == row._id}" (click)="highlight(row)">
+                    </tr>
+                </ng-container>
+                <!--  -->
+
+
+            </table>
+            <div>
+                <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+            </div>
+        </div>
+
+    </div>
+</div>

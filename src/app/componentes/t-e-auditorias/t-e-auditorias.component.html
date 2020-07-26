@@ -1,0 +1,229 @@
+<!-- <p>t-e-auditorias works!</p> -->
+
+<!-- <div>
+  <mat-form-field>
+    <mat-label>Buscar</mat-label>
+    <input matInput (keyup)="applyFilters($event.target.value)" placeholder="Auditorias">
+  </mat-form-field>
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
+      <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+        <th mat-header-cell *matHeaderCellDef>
+          {{column}}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div *ngIf="esObject(element[column])">
+            {{  element[column].mostrar  }}
+          </div>
+
+          <div *ngIf="!esObject(element[column])">
+            {{ element[column] }}
+          </div>
+
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+          <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+
+
+            <div style="padding: 5px; margin: 10px;   background-color: rgba(0, 0, 0, 0.034);">
+
+              <strong style="font-size: medium;">
+                <pre style='display:inline'>&#09;</pre>
+                DATOS DEL PRESTADOR
+              </strong>
+              
+              <mat-grid-list cols="4" rowHeight="5:1" style="max-height: 400px;  ">
+
+                
+                <mat-grid-tile> Prestador: {{element['prestadores']['D_PRESTADOR']}}</mat-grid-tile>
+                <mat-grid-tile>UGL: {{element['prestadores']['C_UGL']}}</mat-grid-tile>
+                <mat-grid-tile>Localidad: {{element['prestadores']['C_LOCALIDAD_PAMI']}}</mat-grid-tile>
+                <mat-grid-tile>Direccion: {{element['prestadores']['D_CALLE']}} {{element['prestadores']['N_PUERTA']}}
+                </mat-grid-tile>
+                
+                <mat-grid-tile>Cuil/cuit: {{element['prestadores']['N_CUIT_CUIL']}}</mat-grid-tile>
+                <mat-grid-tile>SAP: {{element['prestadores']['N_SAP']}}</mat-grid-tile>
+                <mat-grid-tile>Email: {{element['prestadores']['EMAIL']}}</mat-grid-tile>
+                <mat-grid-tile>TE: {{element['prestadores']['TELEFONO']}}</mat-grid-tile>
+
+                
+              </mat-grid-list>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay">
+      </tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element ? null : element">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row">
+      </tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[2,5, 10, 25, 100]"></mat-paginator>
+  </div>
+</div> -->
+
+
+
+
+<mat-form-field>
+  <mat-label>Ingrese su búsqueda</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+</mat-form-field>
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort>
+
+
+    <div *ngFor="let column of displayedColumns">
+
+      <ng-container matColumnDef="{{column}}">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{column | uppercase }}
+        </th>
+        <td mat-cell *matCellDef="let row">
+
+          {{row[column] }}
+
+        </td>
+
+      </ng-container>
+    </div>
+
+
+    <!-- ID Column -->
+    <!-- <ng-container matColumnDef="fechaReal">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha real </th>
+      <td mat-cell *matCellDef="let row"> {{row.fechaReal}} </td>
+    </ng-container>
+    <ng-container matColumnDef="usuarios">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> usuarios </th>
+      <td mat-cell *matCellDef="let row"> {{row.usuarios}} </td>
+    </ng-container>
+    <ng-container matColumnDef="integrantes">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> integrantes </th>
+      <td mat-cell *matCellDef="let row"> {{row.integrantes}} </td>
+    </ng-container>
+    <ng-container matColumnDef="prestadores">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> prestadores </th>
+      <td mat-cell *matCellDef="let row"> {{row.prestadores}} </td>
+    </ng-container>
+    <ng-container matColumnDef="puntajeObtenido">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> puntajeObtenido </th>
+      <td mat-cell *matCellDef="let row"> {{row.puntajeObtenido}} </td>
+    </ng-container> -->
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+    [ngClass]="{'highlight': selectedRowIndex == row._id}"
+    (click)="highlight(row)"
+    ></tr>
+
+    <!-- Row shown when there is no matching data. -->
+    <!-- <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="5">No data matching the filter "{{input.value}}"</td>
+    </tr> -->
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[4, 10, 25, 100]"></mat-paginator>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- 
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
+  
+      <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+        <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+           <td mat-cell *matCellDef="let element">
+          <div *ngIf="esObject(element[column])"> {{  element[column].mostrar  }} </div>
+          
+          <div *ngIf="!esObject(element[column])"> {{ element[column] }} </div>
+        </td>
+  
+      </ng-container>
+  
+       <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+          <br>
+          <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+  
+
+
+
+           
+            <mat-select placeholder="Placeholder" [(ngModel)]="auxSelectHoja" name="item">
+              
+  
+              <mat-option *ngFor="let hoja of element['secciones']['hojas'] " [value]="hoja.hojas" >
+                {{hoja.hojas.mostrar}}
+              </mat-option>
+  
+  
+            </mat-select>
+  
+            <ul *ngFor="let item of auxSelectHoja['items'] ">
+              <li>
+                <div class="row">
+                     
+                  <pre>{{  item.items.mostrar    }}</pre>
+                                                      
+                  <pre>{{  item.porcentaje   }}</pre>
+                </div>
+                <ul *ngFor="let subitem of item.items['subitems'] ">
+                  <li>
+                    <pre>{{  subitem.subitems.mostrar    }}</pre>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+  
+
+
+
+            
+          </div>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element ? null : element">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    </table>
+  
+  
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div> -->

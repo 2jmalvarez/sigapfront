@@ -1,0 +1,51 @@
+<div class="row m-5" style="width: 1000px;" *ngIf="!authService.loggedIn()">
+    <div class="col-md-4 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                Solicitud de registro
+            </div>
+            <div class="card-body">
+                <form [formGroup]="usuarios" (ngSubmit)="funcionSubmit(usuarios)" >
+                    <mat-form-field>
+                        <mat-label>Nombre</mat-label>
+                        <input matInput formControlName="nombre"
+                            placeholder="Ingrese su nombre ">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Apellido</mat-label>
+                        <input matInput formControlName="apellido" 
+                            placeholder="Ingrese su apellido ">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Correo</mat-label>
+                        <input matInput formControlName="correo" 
+                            placeholder="Ingrese su correo ">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Legajo</mat-label>
+                        <input matInput formControlName="legajo" 
+                            placeholder="Ingrese su legajo ">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Contraseña</mat-label>
+                        <input matInput type="password"  formControlName="contrasenia" 
+                            placeholder="Ingrese su contrasenia ">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Profesion</mat-label>
+                        <mat-select formControlName="profesiones" multiple>
+                            <mat-option *ngFor="let topping of profesiones; let Elindex= index" [value]="topping._id" >{{topping['mostrar']}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+
+
+                    <button class="btn btn-primary btn-block">
+                        Registrase
+                    </button>
+                    <a [routerLink]="['/signin']">¿Ya esta registrado? Ingresa!</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

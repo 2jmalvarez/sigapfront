@@ -1,0 +1,14 @@
+<br>
+<div class="container">
+    <mat-form-field style="align-items:center">
+        <mat-label>Seleccionar coleccion</mat-label>
+        <mat-select [(value)]="selected">
+            <mat-option value="{{opc}}" *ngFor="let opc of colecciones"> {{opc}} </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+
+
+<app-tabla-ord-pag-fil [BASE]="selected"></app-tabla-ord-pag-fil>
+
+</div>

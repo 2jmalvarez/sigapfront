@@ -1,0 +1,187 @@
+<!-- <div *ngIf="prestador; else elseBlock"> -->
+<div>
+    <!-- <div *ngIf="prestador && !flagCrearInforme"> -->
+
+
+    <!-- <div mat-card-avatar class="example-header-image"></div> -->
+    <mat-card class="example-card">
+        <div class="container">
+            <mat-card-actions>
+                <h2 style="padding-top: 2%; color: rgb(134, 134, 134);">Nuevo informe de auditoria</h2>
+                <button mat-button (click)="verInforme()"
+                    style="background-color: rgba(63, 81, 181, 0.6); color: rgb(255, 255, 255);">
+                    <div *ngIf="!flagInforme && flagPrestSelec">Completar hojas del informe
+                    </div>
+
+                    <div *ngIf="flagInforme">Volver a buscar al prestador
+                    </div>
+                </button>
+                <div *ngIf="!flagInforme && !flagPrestSelec">Seleccione un prestador para continuar</div>
+
+            </mat-card-actions>
+
+
+            <div>
+                <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+                    {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
+                </button>
+                <mat-vertical-stepper [linear]="isLinear" #stepper>
+
+                    <mat-step>
+
+                        <ng-template matStepLabel>Seleccione la plantilla</ng-template>
+
+                        <!-- buscar plantilla -->
+                        <mat-select placeholder="Plantillas de informes" [(ngModel)]="ValorPlantillasInforme" name="item">
+                            <mat-option *ngFor="let item of PlantillasInforme" [value]="item">
+                                {{item.mostrar}}
+                            </mat-option>
+                        </mat-select>
+                        
+                        <button mat-button matStepperNext>Siguiente</button>
+                    </mat-step>
+
+                    <mat-step [stepControl]="secondFormGroup">
+                        <form [formGroup]="secondFormGroup">
+                            <ng-template matStepLabel>Seleccione los referentes</ng-template>
+                            <mat-form-field>
+                                <mat-label>Ref de auditoria </mat-label>
+                                <input matInput formControlName="secondCtrl" placeholder="Buscar ref" required>
+                            </mat-form-field>
+                            <div>
+                                <button mat-button matStepperPrevious>Atras</button>
+                                <button mat-button matStepperNext>Siguiente</button>
+                            </div>
+                        </form>
+                    </mat-step>
+
+                    <mat-step [stepControl]="firstFormGroup">
+                        <form [formGroup]="firstFormGroup">
+                            <ng-template matStepLabel>Seleccione prestador</ng-template>
+                            <mat-form-field>
+
+                                <mat-label>Buscar prestador</mat-label>
+                                <input matInput placeholder="Last name, First name" formControlName="firstCtrl"
+                                    required>
+                            </mat-form-field>
+
+                            <tabla-ord-pag (Seleccionado)="ElemSelecionado($event)"></tabla-ord-pag>
+                            
+                            <div>
+                                <button mat-button matStepperPrevious>Atras</button>
+                                <button mat-button matStepperNext>Siguiente</button>
+                            </div>
+
+                        </form>
+                    </mat-step>
+
+
+
+                    <mat-step>
+                        <ng-template matStepLabel>Completar informe</ng-template>
+                        <mat-card-header>
+
+                            <!-- <mat-card-title>
+                                <h3><b> {{Prestador["D_PRESTADOR"]}} </b>   </h3>
+                            </mat-card-title>
+
+                            <mat-card-subtitle>
+                                <h4>Auditoria</h4>
+                                <p>
+                                    Fecha
+                                </p>
+
+                            </mat-card-subtitle> -->
+
+                            <!-- <div class="col" *ngIf="flagInforme"> -->
+
+                            <tabla-expandible [base]= "ValorPlantillasInforme"></tabla-expandible>
+
+                            <!-- </div> -->
+                        </mat-card-header>
+                        <div>
+                            <button mat-button (click)="stepper.reset()">Reset</button>
+                            <button mat-button matStepperPrevious>Atras</button>
+                            <button mat-button [routerLink]="['/private']"
+                                style="background-color: rgba(63, 81, 181, 1); color: cornsilk;">
+                                Guardar
+                            </button>
+                        </div>
+                    </mat-step>
+                </mat-vertical-stepper>
+
+            </div>
+
+
+
+            <!-- <div class="row">
+
+                <mat-card-header *ngIf="flagInforme">
+
+                    <mat-card-title>
+                        <h1><b> {{Prestador["D_PRESTADOR"]}} </b>   </h1>
+                    </mat-card-title>
+
+                    <mat-card-subtitle>
+                        <h4>Auditoria</h4>
+                        <p>
+                            Fecha
+                        </p>
+
+                    </mat-card-subtitle>
+
+
+
+                    <tabla-expandible></tabla-expandible>
+
+
+                </mat-card-header>
+                <div class="col" *ngIf="!flagInforme">
+
+
+
+                    <tabla-ord-pag (Seleccionado)="ElemSelecionado($event)"></tabla-ord-pag>
+
+
+                </div>
+                <div class="col mat-elevation-z2" *ngIf="!flagInforme">
+                    <div class="row" *ngIf="!flagInforme">
+
+
+                        <mat-card-content *ngIf="!flagInforme " style="padding-left: 10%;">
+
+                            <br>
+                            <br>
+                            <p> D_PRESTADOR: {{Prestador["D_PRESTADOR"]}}</p>
+                            <p> C_PRESTADOR: {{Prestador["C_PRESTADOR"]}}</p>
+                            <p> N_CUIT_CUIL: {{Prestador["N_CUIT_CUIL"]}}</p>
+                            <p> N_SAP: {{Prestador["N_SAP"]}}</p>
+                            <p> C_UGL: {{Prestador["C_UGL"]}}</p>
+                            <p> D_CALLE: {{Prestador["D_CALLE"]}}</p>
+                            <p> N_PUERTA: {{Prestador["N_PUERTA"]}}</p>
+                            <p> C_PISO_DEPTO: {{Prestador["C_PISO_DEPTO"]}}</p>
+                            <p> C_CP8: {{Prestador["C_CP8"]}}</p>
+                            <p> N_POSTAL: {{Prestador["N_POSTAL"]}}</p>
+                            <p> N_X: {{Prestador["N_X"]}}</p>
+                            <p> N_Y: {{Prestador["N_Y"]}}</p>
+                            <p> TELEFONO: {{Prestador["TELEFONO"]}}</p>
+                            <p> EMAIL: {{Prestador["EMAIL"]}}</p>
+                            <p> M_HABILITADO: {{Prestador["M_HABILITADO"]}}</p>
+                            <p> F_INICIO: {{Prestador["F_INICIO"]}}</p>
+                            <p> C_LOCALIDAD_PAMI: {{Prestador["C_LOCALIDAD_PAMI"]}}</p>
+                        </mat-card-content>
+
+                    </div>
+                </div>
+
+
+
+            </div> -->
+
+        </div>
+
+    </mat-card>
+
+
+
+</div>

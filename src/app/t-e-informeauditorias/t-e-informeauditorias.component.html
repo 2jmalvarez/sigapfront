@@ -1,0 +1,802 @@
+<div class="container" *ngIf="flagAuditoria">
+	<nueva-auditoria [baseEditar]="base" (Evento)="ElemSelecionado($event)">
+
+	</nueva-auditoria>
+</div>
+
+<!-- <div id="textbox" style="position: sticky;
+			top: 90px">
+
+</div> -->
+
+<div class="container" *ngIf="!flagAuditoria">
+
+
+	<!-- <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aspernatur a sed aut voluptate, in voluptas accusantium
+        non, voluptatum mollitia eos dignissimos accusamus modi nemo atque quos repudiandae reprehenderit eius odio.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates suscipit culpa enim. Excepturi facere,
+        obcaecati quis molestias laudantium id necessitatibus ratione magnam vero mollitia et soluta voluptates maiores
+        ad voluptatum.</p> -->
+
+	<!-- <pre>{{ base[0]['plantillasInformes']['secciones'] | json }}</pre> -->
+
+
+
+
+
+
+
+
+
+
+	<br>
+	<form [formGroup]="form" id="contenido" #contenido>
+
+		<div class="example-action-buttons">
+
+			<div class="row">
+				<h2 style="text-align: left;">
+					{{base['prestadores']['mostrar']}}
+					<br>
+					<small style="font-size: 1.3rem;">
+						Fecha planificada: {{base['fechaReal'] | date:'dd/MM/yyyy'}} - {{base['estado']}}
+					</small>
+
+				</h2>
+
+				<div class="col" style="text-align: right">
+
+					<small style="font-size: 1.3rem;"> Cumplimiento:</small> 
+					<strong style="font-size: 2rem;">
+						{{ form.controls['val'].value | percent }}
+					</strong>
+
+				</div>
+			</div>
+
+
+			<!-- C_LOCALIDAD_PAMI: "CLODOMIRA"
+            C_UGL: "19"
+            D_CALLE: "ADEODATO HERRERA"
+            D_PRESTADOR: "GONZALES CLEMENTE DANIEL"
+            EMAIL: ""
+            N_CUIT_CUIL: "20-11748577-4"
+            N_PUERTA: "135"
+            N_SAP: "70923"
+			TELEFONO: "0385 4921017" -->
+
+
+
+
+
+
+		</div>
+
+
+
+
+
+
+		<mat-toolbar color="Primary">
+
+
+			<div class="alignleft">
+
+				<button mat-button (click)="acordeon('expandir')">Expandir todo</button>
+				<button mat-button (click)="acordeon('contraer')">Contraer todo</button>
+			</div>
+			<span class="example-spacer"></span>
+			<div class="alignright">
+				<button mat-flat-button style=" margin: 8px" color="primary"
+					*ngIf="!flagEditar && !flagAuditoriaCerrada" (click)="editarAuditoria()">
+					Editar auditoría
+				</button>
+				<button mat-flat-button style=" margin: 8px" color="primary"
+					*ngIf="!flagEditar && !flagAuditoriaCerrada" (click)="editar()">
+					Editar informe
+				</button>
+				<button mat-flat-button style=" margin: 8px" color="primary"
+					*ngIf="!flagEditar && !flagAuditoriaCerrada" (click)="CerrarInforme()">
+					Cerrar Informe
+				</button>
+				<button mat-flat-button style=" margin: 8px" color="primary" *ngIf="!flagEditar"
+					(click)="ExportarPDF()">
+					Exportar a PDF
+				</button>
+				<button mat-flat-button style=" margin: 8px" color="primary" *ngIf="flagEditar"
+					(click)="cancelar()">Cancelar</button>
+				<button mat-flat-button style=" margin: 8px" color="primary" *ngIf="flagEditar"
+					(click)="save()">Guardar</button>
+			</div>
+
+
+		</mat-toolbar>
+
+
+
+		<br>
+
+
+
+
+
+
+		<mat-accordion>
+			<mat-expansion-panel [expanded]="flagAcordeon">
+				<mat-expansion-panel-header>
+					<mat-panel-title style="font-size: 1.2rem;">
+						Datos del prestador
+					</mat-panel-title>
+					<mat-panel-description>
+
+					</mat-panel-description>
+				</mat-expansion-panel-header>
+
+				<mat-grid-list cols="{{18}}" style="font-size: 0.9rem; background-color: whitesmoke;">
+
+					<mat-grid-tile [colspan]="6" [rowspan]="0.5" style="text-align: start;">
+						Localidad: {{base['prestadores']['C_LOCALIDAD_PAMI']}}
+					</mat-grid-tile>
+					<mat-grid-tile [colspan]="6" [rowspan]="0.5" style="text-align: start;">
+						UGL: {{base['prestadores']['C_UGL']}}
+					</mat-grid-tile>
+					<mat-grid-tile [colspan]="6" [rowspan]="0.5" style="text-align: start;">
+						Dirección: {{base['prestadores']['D_CALLE']}} {{base['prestadores']['N_PUERTA']}}
+					</mat-grid-tile>
+
+					<mat-grid-tile [colspan]="6" [rowspan]="0.5" style="text-align: start;">
+						Email: {{base['prestadores']['EMAIL']}}
+					</mat-grid-tile>
+					<mat-grid-tile [colspan]="6" [rowspan]="0.5" style="text-align: start;">
+						Teléfono: {{base['prestadores']['TELEFONO']}}
+					</mat-grid-tile>
+					<mat-grid-tile [colspan]="6" [rowspan]="0.5" style="text-align: start;">
+						CUIT/CUIL: {{base['prestadores']['N_CUIT_CUIL']}}
+						<br>
+						SAP: {{base['prestadores']['N_SAP']}}
+					</mat-grid-tile>
+					<!-- <mat-grid-tile [colspan]="4" [rowspan]="0.5">
+
+                </mat-grid-tile> -->
+
+					<!-- <mat-grid-tile [colspan]="2" [rowspan]="1">
+                {{base['prestadores']['C_LOCALIDAD_PAMI']}}
+            </mat-grid-tile> -->
+
+				</mat-grid-list>
+			</mat-expansion-panel>
+		</mat-accordion>
+
+		<br>
+
+		<mat-accordion>
+			<mat-expansion-panel [expanded]="flagAcordeon">
+				<mat-expansion-panel-header>
+					<mat-panel-title style="font-size: 1.2rem;">
+						Datos de la auditoria
+					</mat-panel-title>
+					<mat-panel-description>
+
+					</mat-panel-description>
+
+				</mat-expansion-panel-header>
+
+				<mat-grid-list cols="{{20}}" style="margin-top: 5px; font-size: 0.9rem; background-color: whitesmoke;">
+					<mat-grid-tile [colspan]="6" [rowspan]="1.5">
+
+
+						<div style="text-align: left;">
+
+
+
+							<div class="col">
+								<div class="row">
+									<mat-label>Fecha de inicio: </mat-label>
+									<input type="date" style=" border: none; width: auto "
+										formControlName="fechaInicio">
+								</div>
+
+								<div class="row">
+
+
+									<mat-label>Fecha de fin: </mat-label>
+									<input style=" border: none; " type="date" formControlName="fechaFin">
+
+
+								</div>
+							</div>
+
+
+
+						</div>
+
+
+						<!-- <mat-form-field>
+	
+							<mat-label>Enter a date range</mat-label>
+							<mat-date-range-input  [rangePicker]="picker">
+								<input matStartDate [formControl]="form.get('fechaInicio')" placeholder="Start date">
+								<input matEndDate [formControl]="form.get('fechaFin')"  placeholder="End date">
+							</mat-date-range-input>
+							<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+							<mat-date-range-picker #picker></mat-date-range-picker>
+						</mat-form-field> -->
+						<!-- 
+						<mat-form-field>
+	
+							<mat-label>Enter a date range</mat-label>
+							<mat-date-range-input formGroupName="Range" [rangePicker]="picker">
+								<input matStartDate name="fechaInicio" formControlName="fechaInicio" placeholder="Start date">
+								<input matEndDate name="fechaFin" formControlName='fechaFin' placeholder="End date">
+							</mat-date-range-input>
+							<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+							<mat-date-range-picker #picker></mat-date-range-picker>
+						</mat-form-field> -->
+
+
+
+
+					</mat-grid-tile>
+					<mat-grid-tile [colspan]="4" [rowspan]="1.5">
+						GDE: {{base['GDE']}}
+					</mat-grid-tile>
+
+					<!-- <mat-grid-tile [colspan]="5" [rowspan]="1.5">
+					</mat-grid-tile> -->
+					<!-- <mat-form-field appearance="fill"> -->
+					<!-- <mat-label>Enter a date range</mat-label>
+							<mat-date-range-input [rangePicker]="picker"> -->
+
+					<!-- </mat-date-range-input>
+							<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+							<mat-date-range-picker #picker></mat-date-range-picker> -->
+					<!-- </mat-form-field> -->
+
+
+
+
+					<mat-grid-tile [colspan]="5" [rowspan]="1.5">
+						<div class="col" style="text-align: start;">
+							<strong>
+								Integrantes
+							</strong>
+							<div *ngFor="let integrante of base['integrantes'] ">
+								{{integrante['usuarios']['mostrar'] }} (
+								{{integrante['usuarios']['profesiones'][0]['mostrar']}}
+								)
+							</div>
+						</div>
+
+					</mat-grid-tile>
+
+					<mat-grid-tile [colspan]="5" [rowspan]="1.5">
+						<div class="col" style="text-align: start;">
+							<strong>
+								Responsables
+							</strong>
+							<div *ngFor="let integrante of base['integrantes'] ">
+								<div *ngIf="integrante['responsable']">
+									{{integrante['secciones']['mostrar']}}: {{integrante['usuarios']['mostrar']}}
+								</div>
+							</div>
+						</div>
+						<!-- {{base['integrantes'] | json}} -->
+
+					</mat-grid-tile>
+					<!-- <mat-grid-tile [colspan]="2" [rowspan]="1.5">
+
+
+					</mat-grid-tile> -->
+
+
+
+				</mat-grid-list>
+			</mat-expansion-panel>
+		</mat-accordion>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<!-- 
+		<mat-accordion>
+			<mat-expansion-panel [expanded]="flagAcordeon">
+				<mat-expansion-panel-header>
+					<mat-panel-title style="font-size: 1.2rem;">
+
+					</mat-panel-title>
+					<mat-panel-description>
+
+					</mat-panel-description>
+				</mat-expansion-panel-header>
+			</mat-expansion-panel>
+		</mat-accordion>
+	 -->
+
+
+
+		<br>
+		<mat-accordion>
+			<mat-expansion-panel [expanded]="flagAcordeon">
+				<mat-expansion-panel-header>
+					<mat-panel-title style="font-size: 1.2rem;">
+						I. Descripción técnica de la evaluación
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+				<strong>
+
+					Consideraciones generales
+				</strong>
+				<br>
+				<textarea formControlName="ConsideracionesGenerales" style="width: auto;" cols="100" rows="5">
+
+        </textarea>
+			</mat-expansion-panel>
+
+		</mat-accordion>
+		<br>
+		<mat-accordion>
+			<mat-expansion-panel [expanded]="flagAcordeon">
+				<mat-expansion-panel-header>
+					<mat-panel-title style="font-size: 1.2rem;">
+						II. Desarrollo de la evaluación
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+				<strong>
+
+					Cumplimiento de los tiempos sobre las actividades solicitadas por el INSSJP:
+				</strong>
+				<br>
+				<textarea formControlName="CumplimientoTiempos" style="width: auto;" cols="100" rows="5">
+                </textarea>
+				<br>
+				<br>
+				<strong>
+
+					Disposición durante el Video llamado:
+				</strong>
+				<br>
+				<textarea formControlName="DisposicionLlamado" style="width: auto;" cols="100" rows="5">
+                </textarea>
+				<br>
+				<br>
+				<strong>
+
+					Actitud para lo requerido por el auditor durante el Video llamado:
+				</strong>
+				<br>
+				<textarea formControlName="ActitudDuranteLlamado" style="width: auto;" cols="100" rows="5">
+                </textarea>
+				<br>
+			</mat-expansion-panel>
+
+		</mat-accordion>
+
+		<br>
+		<mat-accordion>
+			<mat-expansion-panel [expanded]="flagAcordeon">
+				<mat-expansion-panel-header>
+					<mat-panel-title style="font-size: 1.2rem;">
+						III. Análisis por estándar
+					</mat-panel-title>
+					<mat-panel-description>
+						Cumplimiento:
+						{{ form.controls['val'].value | percent }} {{ form.controls['val'].value | cumplimiento }}
+					</mat-panel-description>
+				</mat-expansion-panel-header>
+
+				<mat-accordion class="example-headers-align" multi>
+					<!-- #enddocregion multi -->
+					<div formArrayName="secciones">
+						<div *ngFor="let secciones of base['plantillasInformes']['secciones']; let pointIndex= index"
+							[formGroupName]='pointIndex'>
+
+
+							<mat-expansion-panel [expanded]="flagAcordeon">
+								<mat-expansion-panel-header>
+
+									<mat-panel-title style="font-size: 1.2rem;">
+										{{secciones['secciones']['mostrar'] | uppercase}} - Cumplimiento:
+										{{ form.controls['secciones'].value[pointIndex]['val'] | percent }}
+										<strong> {{ form.controls['secciones'].value[pointIndex]['val'] | cumplimiento }}</strong>
+									</mat-panel-title>
+									<mat-panel-description>
+
+									</mat-panel-description>
+								</mat-expansion-panel-header>
+								<!-- <pre> {{secciones['secciones']['hojas'][0]['hojas'] | json}} </pre> -->
+								<hr>
+								<div formArrayName="hojas">
+
+
+									<div *ngFor="let hojas of secciones['secciones']['hojas']; let pointIndexx= index"
+										[formGroupName]='pointIndexx'>
+
+										<div formArrayName="items">
+
+
+											<div *ngFor="let items of hojas['hojas']['items']; let pointIndexxx= index"
+												[formGroupName]='pointIndexxx'>
+
+												<div class="row" style="font-size: 1rem;">
+													&nbsp;&nbsp;&nbsp;&nbsp;
+													<!-- <mat-slide-toggle [labelPosition]="['after']" [attr.disabled]="!flagEditar"
+                                                        formControlName="aplica" color="primary">
+
+                                                    </mat-slide-toggle> -->
+
+													<div
+														[style.text-decoration]=" form.controls['secciones'].value[pointIndex]['hojas'][pointIndexx]['items'][pointIndexxx]['aplica'] ? '': 'line-through'  ">
+														&nbsp;
+														{{items['items']['mostrar'] | uppercase }} - Cumplimiento:
+														{{ form.controls['secciones'].value[pointIndex]['hojas'][pointIndexx]['items'][pointIndexxx]['val'] | percent}}
+														<strong>{{ form.controls['secciones'].value[pointIndex]['hojas'][pointIndexx]['items'][pointIndexxx]['val'] | cumplimiento}}</strong>
+													</div>
+
+													<!-- val: {{form['secciones'][pointIndex]['hojas'][pointIndexx]['items'][pointIndexxx]}} -->
+
+
+
+												</div>
+
+												<br>
+												<div class="col ">
+													<div class="col">
+														<ul formArrayName="subitems">
+
+
+															<li *ngFor="let subitems of items['items']['subitems']; let pointIndexxxx= index"
+																[formGroupName]='pointIndexxxx'>
+																<div class="row">
+
+																	<div
+																		[ngSwitch]="form.controls['secciones'].value[pointIndex]['hojas'][pointIndexx]['items'][pointIndexxx]['subitems'][pointIndexxxx]['tipo']">
+
+																		<div *ngSwitchCase="['']">
+
+
+																			<mat-slide-toggle
+																				[labelPosition]="['after']"
+																				
+																				formControlName="aplica"
+																				color="primary">
+
+																			</mat-slide-toggle>
+																			&nbsp;
+																			<mat-checkbox [labelPosition]="['after']"
+																				
+																				formControlName="val" color="primary"
+																				[style.text-decoration]=" form.controls['secciones'].value[pointIndex]['hojas'][pointIndexx]['items'][pointIndexxx]['subitems'][pointIndexxxx]['aplica']  ? '': 'line-through'  ">
+
+																				{{subitems['subitems']['mostrar']}}
+
+																			</mat-checkbox>
+
+
+
+																		</div>
+
+																		<div *ngSwitchCase="['Criterio informativo']">
+																			<!-- 
+																			<mat-checkbox class="example-margin"
+																				formControlName="val" color="primary"
+																				[checked]="allComplete"
+																				[indeterminate]="someComplete()"
+																				(change)="setAll($event.checked)">
+
+																				{{subitems['subitems']['mostrar']}}
+																			</mat-checkbox> -->
+																			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																			<mat-checkbox [labelPosition]="['after']"
+																			[checked]="allComplete"
+																			[indeterminate]="someComplete()"
+																			(change)="setAll($event.checked,pointIndex,pointIndexx,pointIndexxx)"
+																				formControlName="val" color="primary"
+																				[style.text-decoration]=" form.controls['secciones'].value[pointIndex]['hojas'][pointIndexx]['items'][pointIndexxx]['subitems'][pointIndexxxx]['aplica']  ? '': 'line-through'  ">
+																					
+																				{{subitems['subitems']['mostrar']}}
+
+																			</mat-checkbox>
+
+
+																		</div>
+
+
+																		<div
+																			*ngSwitchCase="['Subcriterio cuantitativo']">
+
+																			<mat-slide-toggle
+																				[labelPosition]="['after']"
+																				
+																				formControlName="aplica"
+																				color="primary">
+
+																			</mat-slide-toggle>
+																			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																			<mat-checkbox formControlName="val"
+																				color="primary"
+																				(ngModelChange)="updateAllComplete()"
+																				[style.text-decoration]=" form.controls['secciones'].value[pointIndex]['hojas'][pointIndexx]['items'][pointIndexxx]['subitems'][pointIndexxxx]['aplica']  ? '': 'line-through'  ">
+
+																				{{subitems['subitems']['mostrar']}}
+																			</mat-checkbox>
+
+																		</div>
+
+
+																		<div *ngSwitchCase="['Titulo informativo']">
+
+																			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																			<div [style.color]=" flagEditar  ? 'black': 'grey'  ">																				
+
+																				{{subitems['subitems']['mostrar']}}
+																			</div>
+																			<br>
+
+																		</div>
+
+
+																		<div
+																			*ngSwitchCase="['Subcriterio informativo']">
+																			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																			<mat-checkbox formControlName="val"
+																				color="primary"
+																				(ngModelChange)="updateAllComplete()"
+																				[style.text-decoration]=" form.controls['secciones'].value[pointIndex]['hojas'][pointIndexx]['items'][pointIndexxx]['subitems'][pointIndexxxx]['aplica']  ? '': 'line-through'  ">
+
+																				{{subitems['subitems']['mostrar']}}
+																			</mat-checkbox>
+
+
+
+																		</div>
+
+
+
+
+
+
+
+
+
+																	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+																	<!-- 
+
+																	<mat-slide-toggle [labelPosition]="['after']"
+																		[attr.disabled]="!flagEditar "
+																		formControlName="aplica" color="primary"
+																		*ngIf="form.controls['secciones'].value[pointIndex]['hojas'][pointIndexx]['items'][pointIndexxx]['subitems'][pointIndexxxx]['tipo'] != 'Titulo informativo'  ">
+
+																	</mat-slide-toggle>
+
+																	<div
+																		*ngIf="form.controls['secciones'].value[pointIndex]['hojas'][pointIndexx]['items'][pointIndexxx]['subitems'][pointIndexxxx]['tipo'] == 'Titulo informativo'  ">
+																		{{subitems['subitems']['mostrar']}}
+																	</div>
+
+																	&nbsp;&nbsp;&nbsp;
+
+																	<div
+																		*ngIf="form.controls['secciones'].value[pointIndex]['hojas'][pointIndexx]['items'][pointIndexxx]['subitems'][pointIndexxxx]['tipo'] == 'Informativo'  ">
+																		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+																	</div>
+
+																	<mat-checkbox [labelPosition]="['after']"
+																		[attr.disabled]="!flagEditar"
+																		formControlName="val" color="primary"
+																		wrap="soft"
+																		*ngIf="form.controls['secciones'].value[pointIndex]['hojas'][pointIndexx]['items'][pointIndexxx]['subitems'][pointIndexxxx]['tipo'] != 'Titulo informativo'  "
+																		[style.text-decoration]=" form.controls['secciones'].value[pointIndex]['hojas'][pointIndexx]['items'][pointIndexxx]['subitems'][pointIndexxxx]['aplica'] && form.controls['secciones'].value[pointIndex]['hojas'][pointIndexx]['items'][pointIndexxx]['aplica']  ? '': 'line-through'  ">
+
+
+																		<div>
+																			<div
+																				*ngIf="form.controls['secciones'].value[pointIndex]['hojas'][pointIndexx]['items'][pointIndexxx]['subitems'][pointIndexxxx]['tipo'] == 'Informativo'  ">
+
+																				{{subitems['subitems']['mostrar']}}
+																			</div>
+																			<div
+																				*ngIf="form.controls['secciones'].value[pointIndex]['hojas'][pointIndexx]['items'][pointIndexxx]['subitems'][pointIndexxxx]['tipo'] == ''  ">
+																				{{subitems['subitems']['mostrar']}}
+																			</div>
+																		</div>
+
+
+
+																	</mat-checkbox> -->
+
+																</div>
+
+															</li>
+
+
+
+
+
+														</ul>
+
+													</div>
+
+													<!-- <div style="      width: 565px;
+                                                                    white-space: nowrap;
+                                                                    text-overflow: unset;
+                                                                    overflow: auto;"> -->
+													<div class="row-4">
+														<br>
+														Observaciones de
+														{{items['items']['mostrar'] | uppercase }}:
+														<br>
+														<textarea formControlName="observaciones" wrap="soft"
+															style="width: 100%; height: 20%;">
+													</textarea>
+
+													</div>
+													<hr>
+												</div>
+											</div>
+
+
+
+										</div>
+
+										Fortalezas de {{secciones['secciones']['mostrar']}}:
+										<br>
+										<textarea formControlName="Fortalezas" wrap="soft"
+											style="width: 100%; height: 20%;">
+									</textarea>
+										<br>
+										<br>
+										Oportunidades de {{secciones['secciones']['mostrar']}}:
+										<br>
+										<textarea formControlName="Oportunidades" wrap="soft"
+											style="width: 100%; height: 20%;">
+									</textarea>
+
+										<br>
+
+									</div>
+
+
+
+
+								</div>
+
+
+							</mat-expansion-panel>
+							<br>
+						</div>
+					</div>
+
+
+				</mat-accordion>
+			</mat-expansion-panel>
+		</mat-accordion>
+		<!-- <mat-accordion class="example-headers-align" multi> -->
+
+		<br>
+
+
+
+		<mat-accordion>
+			<mat-expansion-panel [expanded]="flagAcordeon">
+				<mat-expansion-panel-header>
+					<mat-panel-title style="font-size: 1.2rem;">
+						IV. Observaciones
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+				<strong>Fortalezas:</strong>
+				<br>
+				<textarea formControlName="Fortalezas" style="width: auto;" cols="100" rows="5">
+
+                </textarea>
+			</mat-expansion-panel>
+
+		</mat-accordion>
+		<br>
+		<mat-accordion>
+			<mat-expansion-panel [expanded]="flagAcordeon">
+				<mat-expansion-panel-header>
+					<mat-panel-title style="font-size: 1.2rem;">
+						V. Recomendaciones
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+				<strong>Oportunidades:</strong>
+				<br>
+
+				<textarea formControlName="Oportunidades" style="width: auto;" cols="100" rows="5">
+                    </textarea>
+			</mat-expansion-panel>
+
+		</mat-accordion>
+		<br>
+		<mat-accordion>
+			<mat-expansion-panel [expanded]="flagAcordeon">
+				<mat-expansion-panel-header>
+					<mat-panel-title style="font-size: 1.2rem;">
+						VI. Conclusiones
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+
+				<p>
+					En mi carácter de auditor/a del/la Médico/a de Cabecera Dr./Dra.<strong>
+						{{base['prestadores']['mostrar']}} </strong> ({{base['prestadores']['N_CUIT_CUIL']}}), y de
+					acuerdo con las constancias recogidas durante la evaluación, llevada a cabo entre el
+					{{ form.controls['fechaInicio'].value | date:'dd/MM/yyyy'}} y
+					{{ form.controls['fechaFin'].value | date:'dd/MM/yyyy'}}, que muestran que el
+					Dr./Dra. mencionado/a precedentemente, cumple con los 4 estándares del total de 4 que han
+					sido relevados, es mi opinión que el/la profesional cumple en un <strong>
+						{{ form.controls['val'].value | percent }} </strong> de lo considerado, por lo tanto
+					{{ form.controls['val'].value | cumplimiento }} con lo solicitado por el INSSJP.
+				</p>
+
+				<!-- <mat-label>Nùmero de GDE  </mat-label>
+                <input type="text" formControlName="GDE" style="width: 20rem;"> -->
+			</mat-expansion-panel>
+
+		</mat-accordion>
+
+
+		<!-- <div class="example-headers-align">
+                <mat-label>Número GDE</mat-label>
+                <input matInput type="text" >
+
+            </div> -->
+
+
+		<!-- <div id="textbox">
+			<div class="alignleft">
+				<button mat-button (click)="acordeon('expandir')">Expandir todo</button>
+				<button mat-button (click)="acordeon('contraer')">Contraer todo</button>
+			</div>
+			<div class="alignright">
+				<button mat-flat-button style=" margin: 8px" color="primary" *ngIf="flagEditar"
+					(click)="cancelar()">Cancelar</button>
+				<button mat-flat-button style=" margin: 8px" color="primary" *ngIf="flagEditar"
+					(click)="save()">Guardar</button>
+			</div>
+		</div> -->
+
+	</form>
+
+
+
+
+
+
+
+</div>
