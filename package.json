@@ -3,18 +3,28 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postinstall": "ng build --output-path angularapp  --aot --prod",
+    "start": "node server.js"
+
+
+  },
+  "engines": {
+    "node": "v10.15.3",
+    "npm": "6.4.1"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "~10.0.4",
     "@angular/cdk": "^10.0.2",
+    "@angular/cli": "^10.0.4",
     "@angular/common": "~10.0.4",
     "@angular/compiler": "~10.0.4",
+    "@angular/compiler-cli": "^10.0.5",
     "@angular/core": "~10.0.4",
     "@angular/forms": "~10.0.4",
     "@angular/material": "^10.0.2",
@@ -25,19 +35,22 @@
     "ajax": "0.0.4",
     "csv-parse": "^4.8.8",
     "csvtojson": "^2.0.10",
+    "express": "^4.17.1",
     "html2canvas": "^1.0.0-rc.5",
     "jspdf": "^1.5.3",
     "moment": "^2.27.0",
+    "path": "^0.12.7",
     "pdfmake": "^0.1.66",
     "pdfmake-wrapper": "^2.0.0",
     "rxjs": "~6.5.4",
     "tslib": "^2.0.0",
+    "typescript": "~3.9.7",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.1000.3",
-    "@angular/cli": "~10.0.3",
-    "@angular/compiler-cli": "~10.0.4",
+    "@angular/cli": "^10.0.4",
+    "@angular/compiler-cli": "^10.0.5",
     "@angular/language-service": "~10.0.4",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
